@@ -82,9 +82,9 @@ public class WeightedGraph {
         while (start<=end){
             int mid = (start + ((end - start)/2));
             if(vertices[mid] != null) {
-                if (vertices[mid].getCity() == cityId) {
+                if (vertices[mid].getCity().equals(cityId)) {
                     return mid;
-                } else if (vertices[mid].getCity() < cityId) {
+                } else if (vertices[mid].getCity().longValue() < cityId.longValue()) {
                     start = mid+1;
                 } else {
                     end = mid-1;
@@ -221,6 +221,43 @@ public class WeightedGraph {
             Edge edge = new Edge(currentVertex,destinationVertex,weight);
             queueForWeightedGraph.insert(edge);
         }
+    }
+
+    public List<Long> findShortestPathBetweenTwoNodes(Long sourceCityId,Long destinationCityId){
+        List<Long> shortestPath = new ArrayList<>();
+        HashMap<Long,Long> distanceTable = new HashMap<>();
+        List<Integer> visited = new ArrayList<>();
+        // FIRST LET ME PICK THE SOURCE , THIS WILL GIVE ME INDEX OF SOURCE CITY
+        Integer sourceVertexIndex = checkIfExist(sourceCityId);
+
+        for(int i =0;i<vertices.length;i++){
+            if(vertices[i]!=null)
+            distanceTable.put(vertices[i].getCity(), Long.MAX_VALUE);
+        }
+        distanceTable.put(sourceCityId,0l);
+
+        PriorityQueue priorityQueue = new PriorityQueue();
+        priorityQueue.add(sourceVertexIndex);
+
+        while (!priorityQueue.isEmpty())
+        {
+            Integer currentNodeIndex = Integer.valueOf(priorityQueue.poll().toString());
+            visited.add(currentNodeIndex);
+
+            for(int i =0;i<vertices.length;i++){
+                if(vertices[i]!=null  ) {
+                    if (edges[currentNodeIndex.intValue()][i] !=null && !visited.contains(i)) {
+                        Integer distance = distanceTable.get(vertices[currentNodeIndex].getCity()).intValue() + edges[currentNodeIndex][i];
+                        if (distanceTable.get(vertices[i].getCity()) > distance) {
+                            distanceTable.put(vertices[i].getCity(), distance.longValue());
+                            priorityQueue.add(i);
+                        }
+                    }
+                }
+            }
+        }
+
+        return shortestPath;
     }
 }
 

@@ -2,6 +2,7 @@ package datastructures;
 
 import dtos.Vertex;
 
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
@@ -13,8 +14,9 @@ public class UnWeightedGraph {
     private Boolean[][] edges;
     private Integer nextIndex = 0;
 
-    public void addVertex(Vertex vertex){
+    private LinkedList[] edgesAdjacencyList;
 
+    public void addVertex(Vertex vertex){
         if(vertices == null ){
             vertices = new Vertex[currentGraphSize];
             edges = new Boolean[currentGraphSize][currentGraphSize];
@@ -73,6 +75,15 @@ public class UnWeightedGraph {
 
         edges[sourceIndex][destinationIndex] = true;
         return true;
+    }
+
+    public Boolean addEdgesAdjacencyList(Long sourceCity,Long destinationCity){
+        int sourceIndex = checkIfExist(sourceCity);
+        int destinationIndex = checkIfExist(destinationCity);
+
+
+
+        return false;
     }
 
     public int checkIfExist(Long cityId){
@@ -196,4 +207,5 @@ public class UnWeightedGraph {
             }
         }
     }
+
 }
